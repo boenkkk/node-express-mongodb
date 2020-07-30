@@ -15,5 +15,11 @@ module.exports = app => {
     // Update a Document with id
     router.put("/:id", profiles.update);
 
+    // Delete a Document with id
+    router.delete("/:id", profiles.delete);
+
+    // Delete All Document
+    router.delete("/", profiles.deleteAll);
+
     app.use("/api/profiles", router);
 };

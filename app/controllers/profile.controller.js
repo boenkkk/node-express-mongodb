@@ -79,7 +79,7 @@ exports.update = (req, res) => {
         .then(data => {
             if (!data) {
                 res.status(404).send({
-                    message: `Cannot update Profile with id=${id}. Maybe Tutorial was not found!`
+                    message: `Cannot update Profile with id=${id}. Maybe Profile was not found!`
                 });
             } else {
                 res.send({ message: "Profile was updated successfully." })
@@ -88,6 +88,44 @@ exports.update = (req, res) => {
         .catch(err => {
             res.status(500).send({
                 message: "Error updating Profile with id=" + id
+            });
+        });
+};
+
+// Delete a Profile with the specified id in the request
+exports.delete = (req, res) => {
+    const id = req.params.id;
+  
+    Profile.findByIdAndRemove(id, { useFindAndModify: false })
+        .then(data => {
+            if (!data) {
+                res.status(404).send({
+                    message: `Cannot delete Profile with id=${id}. Maybe Profile was not found!`
+                });
+            } else {
+                res.send({
+                    message: "Profile was deleted successfully!"
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: "Could not delete Profile with id=" + id
+            });
+        });
+};
+
+// Delete all Profile from the database.
+exports.deleteAll = (req, res) => {
+    Profile.deleteMany({})
+        .then(data => {
+            res.send({
+                message: `${data.deletedCount} Profiles were deleted successfully!`
+            });
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while removing all profiles."
             });
         });
 };
