@@ -47,3 +47,47 @@ exports.create = (req, res) => {
             });
         });
 };
+
+// Find a single Document with an id
+exports.findOne = (req, res) => {
+    const id = req.params.id;
+  
+    Profile.findById(id)
+        .then(data => {
+            if (!data)
+                res.status(404)
+                    .send({ message: "Not found Profile with id " + id });
+            else res.send(data);
+        })
+        .catch(err => {
+            res.status(500)
+                .send({ message: "Error retrieving Profile with id=" + id });
+        });
+};
+
+// Update a Profile  by the id in the request
+exports.update = (req, res) => {
+    if (!req.body) {
+        return res.status(400).send({
+            message: "Data to update can not be empty!"
+        });
+    }
+  
+    const id = req.params.id;
+  
+    Profile.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+        .then(data => {
+            if (!data) {
+                res.status(404).send({
+                    message: `Cannot update Profile with id=${id}. Maybe Tutorial was not found!`
+                });
+            } else {
+                res.send({ message: "Profile was updated successfully." })
+            };
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: "Error updating Profile with id=" + id
+            });
+        });
+};

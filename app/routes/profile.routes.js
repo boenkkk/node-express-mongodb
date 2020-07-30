@@ -9,5 +9,11 @@ module.exports = app => {
     // Create
     router.post("/", profiles.create);
 
+    // Retrieve a single Document with id
+    router.get("/:id", profiles.findOne);
+
+    // Update a Document with id
+    router.put("/:id", profiles.update);
+
     app.use("/api/profiles", router);
 };
